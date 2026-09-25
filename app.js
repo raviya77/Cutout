@@ -125,27 +125,47 @@ function savePref(v) {
   } catch {}
 }
 
-const worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
-worker.postMessage({ type: 'config', preference: state.quality });
+let worker = null;
+
+// (Re)start the AI worker. A fresh worker is used whenever the model changes, so a
+// failed GPU session can never affect the next attempt.
+function startWorker(preference) {
+  worker?.terminate();
+  const w = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
+  worker = w;
+  w.onmessage = (e) => w === worker && onWorkerMessage(e); // ignore a replaced worker
+  worker.onerror = (e) => {
+    console.error(e);
+    toast('Your browser blocked the AI engine. Try the latest Chrome, Edge, Firefox or Safari.', 7000);
+  };
+  worker.postMessage({ type: 'config', preference });
+  Object.assign(state.model, { status: 'idle', key: null, loaded: 0, total: 0 });
+  // Anything that was mid-way through processing goes back in the queue
+  const busy = state.items.find((i) => i.id === state.busyId);
+  if (busy) {
+    busy.status = 'queued';
+    updateThumb(busy);
+  }
+  state.busyId = null;
+}
+
+function resetItem(it) {
+  it.status = 'queued';
+  it.mask = null;
+  it.undo = [];
+  it.cutDirty = true;
+  updateThumb(it);
+}
 
 function setQuality(q) {
   const m = state.model;
   if (m.status === 'ready' && m.key === q) return;
   state.quality = q;
   savePref(q);
-  worker.postMessage({ type: 'config', preference: q });
-  m.status = 'idle';
-  m.key = null;
-  // Redo the current image with the new model
-  const it = current();
-  if (it && it.status !== 'processing') {
-    it.status = 'queued';
-    it.mask = null;
-    it.undo = [];
-    it.cutDirty = true;
-    updateThumb(it);
-  }
-  warmup();
+  startWorker(q);
+  const it = current(); // redo the current image with the new model
+  if (it) resetItem(it);
+  if (state.items.length) warmup();
   syncUI();
   updateStatus();
   render();
@@ -158,9 +178,20 @@ function warmup() {
   worker.postMessage({ type: 'warmup' });
 }
 
-worker.onmessage = ({ data }) => {
+function onWorkerMessage({ data }) {
   const m = state.model;
   switch (data.type) {
+    case 'gpu-failed': {
+      // The best model didn't work on this device's graphics card: use the light one.
+      console.warn('Best quality failed on this device, switching to Fast:', data.message);
+      toast("Best quality isn't supported on this device, so Fast mode is being used.", 5000);
+      state.quality = 'light';
+      startWorker('light');
+      warmup();
+      syncUI();
+      pump();
+      break;
+    }
     case 'loading':
       m.status = 'loading';
       m.device = data.device;
@@ -213,12 +244,9 @@ worker.onmessage = ({ data }) => {
       break;
   }
   updateStatus();
-};
+}
 
-worker.onerror = (e) => {
-  console.error(e);
-  toast('Your browser blocked the AI engine. Try the latest Chrome, Edge, Firefox or Safari.', 7000);
-};
+startWorker(state.quality);
 
 function maskToCanvas(mask, w, h) {
   const c = makeCanvas(w, h);
