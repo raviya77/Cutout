@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cutout – Remove Image Backgrounds Free</title>
+  <meta name="description" content="Remove the background from any photo in seconds. 100% free, no sign-up, and your images never leave your device." />
+  <meta name="theme-color" content="#5b4cf5" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Cutout home">
+      <img src="favicon.svg" alt="" width="28" height="28" />
+      <span>Cutout</span>
+    </a>
+    <div class="topbar-note">Free · No sign-up · Private</div>
+  </header>
+
+  <!-- ============ HOME ============ -->
+  <main id="home" class="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>Remove image<br />background</h1>
+        <p class="lead"><strong>100% automatic</strong> and <span class="free-pill">Free</span></p>
+        <ul class="ticks">
+          <li>Cutouts in seconds, right in your browser</li>
+          <li>Your photos never leave your device</li>
+          <li>Full HD (1080p) downloads, no watermark</li>
+        </ul>
+      </div>
+
+      <div class="upload-card" id="dropzone">
+        <button class="btn btn-primary btn-xl" id="uploadBtn" type="button">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 20h16"/></svg>
+          Upload Image
+        </button>
+        <p class="upload-hint">or drop a file,<br />paste an image (<kbd>Ctrl</kbd>+<kbd>V</kbd>)</p>
+        <input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp,image/bmp,image/gif" multiple hidden />
+      </div>
+    </section>
+
+    <section class="samples">
+      <p>No image? Try one of these:</p>
+      <div class="sample-row" id="samples">
+        <button type="button" class="sample" data-src="https://images.pexels.com/photos/5965592/pexels-photo-5965592.jpeg?auto=compress&cs=tinysrgb&w=1280" aria-label="Sample: person">
+          <img src="https://images.pexels.com/photos/5965592/pexels-photo-5965592.jpeg?auto=compress&cs=tinysrgb&w=200" alt="" loading="lazy" crossorigin="anonymous" />
+        </button>
+        <button type="button" class="sample" data-src="https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/corgi.jpg" aria-label="Sample: dog">
+          <img src="https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/corgi.jpg" alt="" loading="lazy" crossorigin="anonymous" />
+        </button>
+        <button type="button" class="sample" data-src="https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/cats.jpg" aria-label="Sample: cats">
+          <img src="https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/cats.jpg" alt="" loading="lazy" crossorigin="anonymous" />
+        </button>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature">
+        <div class="feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div>
+        <h3>Fast &amp; automatic</h3>
+        <p>AI finds the subject for you — people, pets, products and more.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+        <h3>Private by design</h3>
+        <p>Everything runs on your device. Nothing is uploaded to a server.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></div>
+        <h3>Edit &amp; replace</h3>
+        <p>Add a colour, a photo or a blur behind your subject, and touch up edges.</p>
+      </div>
+    </section>
+
+    <section class="faq">
+      <h2>Questions</h2>
+      <details>
+        <summary>Is it really free?</summary>
+        <p>Yes. There are no credits, no watermarks and no account. The AI runs in your browser, so each image costs nothing to process.</p>
+      </details>
+      <details>
+        <summary>Why is the first image slower?</summary>
+        <p>The first time, your browser downloads the AI model (about 44–88 MB). It's saved on your device, so after that it starts instantly — even offline.</p>
+      </details>
+      <details>
+        <summary>What resolution do I get?</summary>
+        <p>Up to Full HD (1920 × 1080). Smaller images keep their original size.</p>
+      </details>
+      <details>
+        <summary>The edges aren't perfect. What can I do?</summary>
+        <p>Use the <strong>Erase</strong> and <strong>Restore</strong> brushes in the editor to paint away leftovers or bring back parts of your subject.</p>
+      </details>
+    </section>
+  </main>
+
+  <!-- ============ EDITOR ============ -->
+  <main id="editor" class="editor" hidden>
+    <div class="editor-main">
+      <div class="stage" id="stage">
+        <div class="canvas-wrap" id="canvasWrap">
+          <canvas id="view"></canvas>
+          <div class="compare-handle" id="compareHandle" hidden><span></span></div>
+          <div class="brush-cursor" id="brushCursor" hidden></div>
+          <div class="status" id="status" hidden>
+            <div class="spinner"></div>
+            <div class="status-text" id="statusText">Removing background…</div>
+            <div class="progress" id="progress" hidden><div class="progress-bar" id="progressBar"></div></div>
+            <div class="status-sub" id="statusSub"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="toolbar" id="toolbar">
+        <div class="seg" role="group" aria-label="Tools">
+          <button type="button" class="tool active" data-tool="none" title="Move / view">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l7 17 2.5-7.5L21 11z"/></svg>
+            <span>View</span>
+          </button>
+          <button type="button" class="tool" data-tool="erase" title="Erase – paint to remove">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 20H9l-5-5a2 2 0 0 1 0-2.8L13.2 3a2 2 0 0 1 2.8 0l4 4a2 2 0 0 1 0 2.8L11 19"/><path d="M8 9l7 7"/></svg>
+            <span>Erase</span>
+          </button>
+          <button type="button" class="tool" data-tool="restore" title="Restore – paint to bring back">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 3l3 3-11 11-4 1 1-4z"/><path d="M3 21h8"/></svg>
+            <span>Restore</span>
+          </button>
+        </div>
+
+        <label class="brush-size" id="brushSizeWrap" hidden>
+          <span>Brush</span>
+          <input type="range" id="brushSize" min="6" max="120" value="36" />
+        </label>
+
+        <div class="toolbar-right">
+          <button type="button" class="icon-btn" id="undoBtn" title="Undo (Ctrl+Z)" disabled>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="compareBtn" title="Compare before / after" aria-pressed="false">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+            <span>Compare</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="tray" id="tray" aria-label="Your images">
+        <button type="button" class="tray-add" id="addMoreBtn" title="Add images">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <aside class="panel">
+      <button type="button" class="btn btn-primary btn-block" id="downloadBtn" disabled>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 10l6 6 6-6"/><path d="M4 20h16"/></svg>
+        Download
+      </button>
+      <div class="dl-meta">
+        <div class="seg seg-sm" role="group" aria-label="File format">
+          <button type="button" class="fmt active" data-fmt="png">PNG</button>
+          <button type="button" class="fmt" data-fmt="jpg">JPG</button>
+        </div>
+        <span id="dlSize">—</span>
+      </div>
+      <button type="button" class="btn btn-ghost btn-block" id="downloadAllBtn" hidden>Download all</button>
+
+      <div class="panel-section">
+        <h4>Background</h4>
+        <div class="bg-tabs" role="tablist">
+          <button type="button" class="bg-tab active" data-bg="transparent" role="tab">None</button>
+          <button type="button" class="bg-tab" data-bg="color" role="tab">Colour</button>
+          <button type="button" class="bg-tab" data-bg="image" role="tab">Photo</button>
+          <button type="button" class="bg-tab" data-bg="blur" role="tab">Blur</button>
+        </div>
+
+        <div class="bg-pane" data-pane="color" hidden>
+          <div class="swatches" id="swatches"></div>
+        </div>
+        <div class="bg-pane" data-pane="image" hidden>
+          <button type="button" class="btn btn-ghost btn-block" id="bgImageBtn">Choose a background photo</button>
+          <input id="bgImageInput" type="file" accept="image/*" hidden />
+        </div>
+        <div class="bg-pane" data-pane="blur" hidden>
+          <label class="slider-row"><span>Amount</span><input type="range" id="blurAmount" min="2" max="40" value="14" /></label>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <button type="button" class="btn btn-ghost btn-block danger" id="deleteBtn">Delete this image</button>
+        <button type="button" class="btn btn-ghost btn-block" id="newBtn">Start over</button>
+      </div>
+
+      <p class="privacy-note">Processed on your device. Nothing is uploaded.</p>
+    </aside>
+  </main>
+
+  <div class="drop-overlay" id="dropOverlay" hidden>
+    <div>Drop images anywhere</div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <span>Cutout — free background remover. AI model: <a href="https://huggingface.co/schirrmacher/ormbg" target="_blank" rel="noopener">ormbg</a> (Apache-2.0), running in your browser with <a href="https://huggingface.co/docs/transformers.js" target="_blank" rel="noopener">Transformers.js</a>.</span>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
