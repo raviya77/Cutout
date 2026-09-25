@@ -1,4 +1,4 @@
-// Cutout — free, in-browser background remover.
+// Cutout: a free background remover that runs in the browser.
 // All image processing happens on the visitor's device; nothing is uploaded.
 
 const MAX_LONG = 1920; // Full HD cap: long side ≤ 1920px …
@@ -184,7 +184,7 @@ function onWorkerMessage({ data }) {
     case 'gpu-failed': {
       // The best model didn't work on this device's graphics card: use the light one.
       console.warn('Best quality failed on this device, switching to Fast:', data.message);
-      toast("Best quality isn't supported on this device, so Fast mode is being used.", 5000);
+      toast("Best quality doesn't work on this device. Switched to Fast.", 5000);
       state.quality = 'light';
       startWorker('light');
       warmup();
@@ -494,7 +494,7 @@ function updateStatus() {
     spinner.hidden = true;
     el.wrap.classList.remove('scanning');
     el.statusText.textContent = "Couldn't remove the background";
-    el.statusSub.textContent = 'Try another image, or reload the page and try again.';
+    el.statusSub.textContent = 'Try another image or reload the page.';
     el.progress.hidden = true;
     return;
   }
@@ -506,7 +506,7 @@ function updateStatus() {
     el.statusText.textContent = 'Getting the AI ready…';
     el.progress.hidden = false;
     el.progressBar.style.width = `${Math.min(100, (m.loaded / m.total) * 100).toFixed(1)}%`;
-    el.statusSub.textContent = `${mb(m.loaded)} of ${mb(m.total)} MB · one-time download, saved for next time`;
+    el.statusSub.textContent = `${mb(m.loaded)} of ${mb(m.total)} MB · saved on your device for next time`;
   } else if (m.status !== 'ready') {
     el.statusText.textContent = 'Getting the AI ready…';
     el.progress.hidden = true;
@@ -567,8 +567,8 @@ function syncUI() {
   else if (shown === 'best')
     hint.textContent =
       m.gpu === false
-        ? 'Sharpest cutouts. No graphics card was found, so each image may take up to a minute.'
-        : 'Sharpest cutouts, using your graphics card. One-time 220 MB download.';
+        ? 'Sharpest cutouts. No graphics card was found so each image may take up to a minute.'
+        : 'Sharpest cutouts using your graphics card. One-time 220 MB download.';
   else hint.textContent = 'Smaller 46 MB download that works on any device. Edges are less precise.';
   state.items.forEach((i) => i.thumb?.classList.toggle('active', i.id === state.currentId));
 }

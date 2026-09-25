@@ -1,4 +1,4 @@
-# Cutout — free background remover
+# Cutout: free background remover
 
 Remove the background from any photo, 100% free. The AI runs **in the visitor's browser**, so images never leave their device and there are no server costs.
 
@@ -13,7 +13,7 @@ Remove the background from any photo, 100% free. The AI runs **in the visitor's 
 - Download PNG (transparent) or JPG, up to Full HD (1920 × 1080)
 
 ## How it works
-- Plain HTML/CSS/JS — no build step. Just static files.
+- Plain HTML, CSS and JS with no build step. Just static files.
 - [Transformers.js](https://huggingface.co/docs/transformers.js) (loaded from the jsDelivr CDN) runs the model in a Web Worker.
 - Models download from Hugging Face on first use and are cached by the browser:
   - `onnx-community/BEN2-ONNX` (fp16, ~220 MB), run on WebGPU
@@ -39,5 +39,6 @@ Any static host works: GitHub Pages, Cloudflare Pages, Netlify, Vercel. Upload t
 
 ## Licenses
 - Models: [BEN2](https://huggingface.co/PramaLLC/BEN2) (MIT), [IS-Net](https://github.com/xuebinqin/DIS) (Apache-2.0)
-- Transformers.js — Apache-2.0
-- Sample images are loaded from Pexels and Hugging Face at runtime.
+- Transformers.js (Apache-2.0) with ONNX Runtime Web (MIT)
+- Inter font (SIL Open Font License 1.1)
+- Sample photos from Pexels (Pexels License): Charlotte May, muhannad alatawi, Git Stephen Gitau
