@@ -9,9 +9,11 @@ import {
 // Both models are free for commercial use. Each downloads once, then the browser caches it.
 const MODELS = {
   // BEN2 (MIT): best quality: clean edges, handles illustrations, objects and hair.
-  best: { id: 'onnx-community/BEN2-ONNX', dtype: 'fp16', device: 'webgpu' },
+  // Graph optimisation is kept at 'basic': the fully optimised graph fuses a LayerNorm
+  // kernel that fails to compile on some GPUs (e.g. Apple Silicon in Chrome).
+  best: { id: 'onnx-community/BEN2-ONNX', dtype: 'fp16', options: { graphOptimizationLevel: 'basic' } },
   // IS-Net general (Apache-2.0): lighter fallback for devices without a usable GPU.
-  light: { id: 'Ko033/isnet-general-use-onnx', dtype: 'q8', device: 'wasm' },
+  light: { id: 'Ko033/isnet-general-use-onnx', dtype: 'q8' },
 };
 
 env.allowLocalModels = false;
@@ -51,6 +53,7 @@ async function loadModel(choice) {
   const m = await AutoModel.from_pretrained(cfg.id, {
     dtype: cfg.dtype,
     device: choice.device,
+    session_options: cfg.options,
     progress_callback: onProgress,
   });
   const p = await AutoProcessor.from_pretrained(cfg.id);
@@ -69,8 +72,9 @@ function ensureLoaded() {
         await loadModel(choice);
       } catch (err) {
         if (choice.key === 'light') throw err;
-        console.warn('Best model failed to load, using the light model', err);
-        await loadModel({ key: 'light', device: 'wasm' });
+        // A failed GPU session can leave the runtime in a bad state, so ask the page
+        // to start a fresh worker with the light model instead of retrying here.
+        throw Object.assign(err, { gpuFailed: true });
       }
     })();
     loading.catch(() => (loading = null));
@@ -110,7 +114,8 @@ self.onmessage = async ({ data }) => {
     try {
       await ensureLoaded();
     } catch (err) {
-      postMessage({ type: 'fatal', message: String(err?.message || err) });
+      const message = String(err?.message || err);
+      postMessage(err?.gpuFailed ? { type: 'gpu-failed', message } : { type: 'fatal', message });
     }
     return;
   }
@@ -127,10 +132,7 @@ self.onmessage = async ({ data }) => {
       alpha = await predict(image);
     } catch (err) {
       if (active === 'light') throw err;
-      console.warn('Best model failed while running, switching to the light model', err);
-      loading = loadModel({ key: 'light', device: 'wasm' });
-      await loading;
-      alpha = await predict(image);
+      throw Object.assign(err, { gpuFailed: true });
     }
 
     const mask = await RawImage.fromTensor(alpha.mul(255).clamp(0, 255).to('uint8')).resize(width, height);
@@ -140,6 +142,7 @@ self.onmessage = async ({ data }) => {
       [out.buffer],
     );
   } catch (err) {
-    postMessage({ type: 'error', id, message: String(err?.message || err) });
+    const message = String(err?.message || err);
+    postMessage(err?.gpuFailed ? { type: 'gpu-failed', id, message } : { type: 'error', id, message });
   }
 };
